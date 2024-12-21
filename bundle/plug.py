@@ -31,7 +31,7 @@ def configure(settings: dict) -> bool:
 
   g_src = Path(settings["src"])
   if not g_src.exists():
-    bip.error("Source directory does not exist.")
+    bip.error(f"Source directory '{g_src}' does not exist.")
     return False
 
   global g_out
