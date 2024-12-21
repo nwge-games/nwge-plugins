@@ -30,9 +30,6 @@ def configure(settings: dict) -> bool:
     return False
 
   g_src = Path(settings["src"])
-  if not g_src.exists():
-    bip.error(f"Source directory '{g_src}' does not exist.")
-    return False
 
   global g_out
   if "out" not in settings:
@@ -67,4 +64,8 @@ def want_run() -> bool:
   return False
 
 def run() -> bool:
+  if not g_src.exists():
+    bip.error(f"Source directory '{g_src}' does not exist.")
+    return False
+
   return bip.cmd(g_exe, ["create", str(g_src), str(g_out)])
