@@ -41,6 +41,11 @@ def configure(settings: dict) -> bool:
 
   g_dst = Path(settings["dst"])
 
+  g_src = g_src.resolve()
+  g_dst = g_dst.resolve()
+  if not g_out.parent.exists():
+    g_out.parent.mkdir(parents=True)
+
   return True
 
 def clean() -> bool:
