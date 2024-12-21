@@ -17,7 +17,7 @@ g_exe: str = "nwgebndl"
 g_src: Path
 
 # Destination bundle file.
-g_dst: Path
+g_out: Path
 
 def configure(settings: dict) -> bool:
   global g_exe
@@ -34,15 +34,15 @@ def configure(settings: dict) -> bool:
     bip.error("Source directory does not exist.")
     return False
 
-  global g_dst
-  if "dst" not in settings:
+  global g_out
+  if "out" not in settings:
     bip.error("Destination bundle file not specified.")
     return False
 
-  g_dst = Path(settings["dst"])
+  g_out = Path(settings["out"])
 
   g_src = g_src.resolve()
-  g_dst = g_dst.resolve()
+  g_out = g_out.resolve()
   if not g_out.parent.exists():
     g_out.parent.mkdir(parents=True)
 
@@ -54,10 +54,10 @@ def clean() -> bool:
   return True
 
 def want_run() -> bool:
-  if not g_dst.exists():
+  if not g_out.exists():
     return True
 
-  bndl_mod_time = g_dst.stat().st_mtime
+  bndl_mod_time = g_out.stat().st_mtime
 
   # only iterate top level since bundles don't include subdirectories
   for file in g_src.iterdir():
@@ -67,4 +67,4 @@ def want_run() -> bool:
   return False
 
 def run() -> bool:
-  return bip.cmd(g_exe, ["create", str(g_src), str(g_dst)])
+  return bip.cmd(g_exe, ["create", str(g_src), str(g_out)])
